@@ -179,3 +179,12 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+checkpoints.db
+.vscode/
+.DS_Store
+docker-compose.override.yml
+
+# Dev/test scripts
+test.py
+test_timetravel.py

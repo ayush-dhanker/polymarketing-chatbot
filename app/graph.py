@@ -1,4 +1,4 @@
-from langgraph.graph import StateGraph, START, END
+from langgraph.graph import StateGraph, END
 from app.state import State
 from app.nodes import guardrail_node, assistant_node
 from app.checkpointer import get_checkpointer
@@ -6,21 +6,18 @@ from app.checkpointer import get_checkpointer
 
 def should_continue(state: State):
     last_message = state["messages"][-1]
-
     if last_message.type == "ai":
         return END
     return "assistant"
 
 
-def build_graph(checkpointer=None):
-    checkpointer = get_checkpointer()
+def build_graph():
+    checkpointer = get_checkpointer()  # connection stays open
 
     graph = StateGraph(State)
-
     graph.add_node("guardrail", guardrail_node)
     graph.add_node("assistant", assistant_node)
-
-    graph.add_edge(START, "guardrail")
+    graph.set_entry_point("guardrail")
     graph.add_conditional_edges("guardrail", should_continue)
     graph.add_edge("assistant", END)
 
