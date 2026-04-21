@@ -1,6 +1,7 @@
 from langgraph.graph import StateGraph, START, END
 from app.state import State
 from app.nodes import guardrail_node, assistant_node
+from app.checkpointer import get_checkpointer
 
 
 def should_continue(state: State):
@@ -12,6 +13,8 @@ def should_continue(state: State):
 
 
 def build_graph(checkpointer=None):
+    checkpointer = get_checkpointer()
+
     graph = StateGraph(State)
 
     graph.add_node("guardrail", guardrail_node)
